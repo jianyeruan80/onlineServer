@@ -1,0 +1,34 @@
+<ion-view view-title="{{title}}">
+   <ion-nav-bar class="bar-stable">
+        <!-- <ion-nav-buttons side="left">left </ion-nav-buttons> -->
+       
+    <ion-nav-buttons side="right"> <button  ng-click="openCustomer()">New</button>
+
+      
+</ion-nav-bar>
+    
+<!-- 
+  <ion-subheader-bar class="bar bar-subheader" style="padding:0;margin:0">
+  
+   
+  </ion-subheader-bar>  -->
+
+  <ion-content style="margin-top:50px;">
+   <div class="list">
+   <div class="item item-divider">
+         <div style="display:inline-block;width:30%"> firstname </div><div style="display:inline-block;width:33%">lastname</div><div style="display:inline-block;width:33%">Email</div>
+    </div>
+
+   <div class="item" ng-repeat="item in customerData.customers"  ng-click="openCustomer('{{item._id}}')">
+    <div style="display:inline-block;width:30%"> {{item.email}} </div><div style="display:inline-block;width:33%">{{item.phoneNum1}}</div><div style="display:inline-block;width:33%">{{item.phoneNum2}}</div>
+
+  </div>
+   
+</div>
+
+
+
+  
+
+</ion-content>
+</ion-view>

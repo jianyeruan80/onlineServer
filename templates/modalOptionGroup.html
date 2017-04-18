@@ -1,0 +1,26 @@
+
+         <ion-modal-view class="openmodal">
+          <ion-header-bar>
+             <h1 class = "title">Options</h1>
+             <button class = "button icon icon-right ion-ios-close-outline" 
+                ng-click = "claseOptionGroup()"></button>
+          </ion-header-bar>
+          <ion-content>
+
+
+       <div class="formcontainer">
+        <form ng-submit="optionGroupUpdate()" style="width:100%;text-align:center;" class="formcontainer">
+       <div style="display:flex; justify-content: space-between;flex-flow:row wrap">
+         
+          <input  placeholder="group"  type="text" ng-model="appData.optionGroup.group" class="clo32 required">
+          <input  placeholder="secondLauguage" type="text" ng-model="appData.optionGroup.language.second" class="clo32 required">
+          <input  placeholder="thirdLauguage" type="text" ng-model="appData.optionGroup.language.third" class="clo32 required">
+         
+          <input  placeholder="minimun"  type="text" ng-model="appData.optionGroup.minimun" class="clo32 required">
+          <input  placeholder="maximun" type="text" ng-model="appData.optionGroup.maximun" class="clo32 required">
+          <input  placeholder="order" type="text" ng-model="appData.optionGroup.order" class="clo32 required">
+       </div>
+              
+              <input type="submit" value="Save11" style="margin:25px;">
+</div>
+         </ion-content></ion-modal-view>

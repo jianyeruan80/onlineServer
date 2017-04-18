@@ -1,0 +1,37 @@
+<ion-view view-title="{{title}}">
+
+  <ion-content direction="xy">
+ 
+   <!-- style="margin-left:50%;transform:translate(-50%,0)"  -->
+  <div class="tree" style=" white-space: nowrap;width:1500%;">
+    <ul>
+        <li>
+            <a href="#">{{treeItemJson.name}}</a>
+            <ul> 
+              <li ng-repeat="itema in treeItemJson.items">
+               <a href="#" ng-click="getGroup('{{itema._id}}')">{{itema.order}}-{{itema.groupName}}</a>
+                        <ul>
+                             <li ng-repeat="itemb in itema.categorys">
+                                   <a href="#"  style="background:yellow;min-width:220px;" ng-click="getCategory('{{itemb._id.id}}')">{{itemb._id.order}}-{{itemb._id.name}}</a>
+                                       <ul class="vertical">
+                                            <li ng-repeat="itemc in itemb.items" ng-click="getItem('{{itemc._id}}')">
+                                                 <a href="#">{{itemc.order}}-{{itemc.name}}<font color=red>[{{itemc.price}}]</font></a>
+                                            </li>  
+                                      </ul>
+                             </li>
+                        </ul>
+
+              </li>
+            </ul>
+          
+   </li>
+        </ul>
+
+</div>
+
+
+
+
+
+</ion-content>
+</ion-view>

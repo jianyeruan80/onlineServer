@@ -1,0 +1,26 @@
+     <ion-modal-view class="openmodal">
+      <ion-header-bar>
+         <h1 class = "title">Role</h1>
+         <button class = "button icon icon-right ion-ios-close-outline" 
+            ng-click = "closeRoleModal()"></button>
+      </ion-header-bar>
+      <ion-content>
+ <form  ng-submit="roleUpdate()">
+     <div class = "row item"  style="text-align:center;"><div class = "col col-50"><ion-checkbox ng-model="appData.role.status"   ng-true-value="true" ng-false-value="false" >Status</ion-checkbox> </div>
+     <div class = "col col-50">
+
+<input   placeholder="name" ng-model="appData.role.name"  style="width:95%;margin:auto;" required/><span style="color:red">*</span>
+     </div>
+    </div>
+ 
+
+    <div class = "row item">
+   <div class = "col col-center" style="text-align:center;">
+    <input   placeholder="description" ng-model="appData.role.description"  style="width:95%;margin:auto;"/>
+      </div>
+  </div>  
+<div style="width:100%;text-align:center;margin-top:20px;font-size:600;font-size:30px;">
+      <input type="submit" value="Submit">
+    </div>
+</form>
+     </ion-content></ion-modal-view>

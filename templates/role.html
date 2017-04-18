@@ -1,0 +1,43 @@
+<ion-view view-title="Role Manager">
+   <ion-nav-bar class="bar-stable">
+        
+        <ion-nav-buttons side="right"> <button ng-click="openRoleModal()">New</button>&nbsp;&nbsp;<button ng-click="auth()" ng-if="!!config.selectRoleId">Authorize</button>  </ion-nav-buttons>
+   </ion-nav-bar>
+<ion-content>
+  <div class="list">
+  <div class="item item-divider">Roles List</div>
+  <div class="flex-container">
+      <div  ng-class="{'flex-item2':true,'statusDisable':!item.status}" ng-repeat="item in appData.roles" ng-click="roleEdit($index)" >
+       <label class="admin--label" style="margin-top:-10px;" ng-click="getSelectRolePerms($event,'{{item._id}}')">
+        <input class="admin--radio" type="radio" name="admin-radio">
+        <span class="admin--radioInput"></span>
+        </label>{{item.name}}
+       </div>
+      </div>
+</div>
+
+<div class="item" style="border-bottom:0;height:0px;">&nbsp;</div>
+   <div class="list"><div class="item item-divider">Permission List</div>
+  
+
+  <div class="item item-divider" ng-repeat-start="item in appData.perms">
+           <label class="admin--label" style="margin-top:-10px;margin-left:-6px">
+                <input class="admin--radio" type="checkbox" id="allCheckbox{{item._id}}" ng-click="all($event)" data-permground="{{item._id}}" >
+                <span class="admin--checkbox admin--radioInput"></span>{{item._id}}
+            </label>
+  </div>
+
+      <div class="flex-container" ng-repeat-end>
+            <div  ng-class="{'flex-item':true,'statusDisable':!obj.status,'special':!!obj.merchant_ids}" ng-repeat="obj in item.perms | orderBy:['subject','perm'] " data-perm="{{obj.value}}"    ng-click="permFind($event)" title="{{obj.merchant_ids}}">
+                     <label class="admin--label" style="margin-top:-10px;" ng-click="stop($event)">
+                     <input   class="admin--radio" type="checkbox" ng-model="obj.key" 
+                             ng-true-value="'{{obj.value}}'" ng-false-value="'0'" />
+                    <span class="admin--checkbox admin--radioInput"></span>
+                    </label> {{obj.subject}}-{{obj.action}}-[{{obj.perm}}] 
+           </div>
+        </div>
+</div>
+
+
+</ion-content>
+</ion-view>

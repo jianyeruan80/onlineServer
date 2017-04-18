@@ -1,0 +1,76 @@
+<ion-view view-title="{{title}}">
+   <ion-nav-bar class="bar-stable">
+       
+          <ion-nav-buttons side="right"> <button ng-if="title=='Item'" ng-click="openCheckedMenuModal()">Check</button> <button ng-click="openModal()">New</button> </ion-nav-buttons>
+   </ion-nav-bar>
+    
+
+  <ion-subheader-bar class="bar bar-subheader" style="padding:0;margin:0">
+  	<div style="width:25%;text-align:center;font-size:25px;line-height:1.2;border-right:solid #ccc 1px;padding:0"  ng-class="{'current_select':title=='Group'}"  ng-click="goToLink('Group')">Group</div>
+  	<div style="width:25%;text-align:center;font-size:25px;line-height:1.2;padding:0;border-right:solid #ccc 1px;"  ng-class="{'current_select':title=='Category'}"  ng-click="goToLink('Category')">Category</div>
+    <div style="width:25%;text-align:center;font-size:25px;line-height:1.2;padding:0;border-right:solid #ccc 1px;"  ng-class="{'current_select':title=='Item'}"  ng-click="goToLink('Item')">Item</div>
+    <div style="width:25%;text-align:center;font-size:25px;line-height:1.2;padding:0"  ng-class="{'current_select':title=='Option'}"  ng-click="goToLink('Option')">Option</div>
+   
+
+
+
+
+  </ion-subheader-bar>  <!-- optional -->
+
+  <ion-content style="margin-top:50px;">
+
+  <div style="display:flex;flex-flow:row wrap;align-content:space-between;font-size:20px;" ng-if="title=='Group'" >
+      <div ng-repeat="item in groupLists" style="font-size:14px;position:relative;width:220px;height:50px;border:solid #ddd 2px;margin:10px;line-height:50px;border-radius:5px;text-align:center;overflow:hidden" 
+      ng-click="openModal($index)">{{item.name}}
+      <img  src="{{CONFIG.path}}{{item.picture?item.picture:''}}" onerror="defaultImg()" style="position:absolute;right:0;top:0;width:30px;height:30px;border-radius:5px;" />
+
+
+    </div>
+
+  </div>
+  
+
+   <div class="list" ng-if="title=='Category'">
+         <div class="item item-divider">
+               <div style="display:inline-block;width:30%"> group</div><div style="display:inline-block;width:70%">Name</div>
+          </div>
+
+   <div class="item" ng-repeat="item in categoryLists"  ng-click="openModal($index)">
+          <div style="display:inline-block;width:30%"> {{item.group.name}} </div><div style="display:inline-block;width:70%">{{item.name}}</div>
+
+  </div>
+   
+</div>
+
+ <div class="list" ng-if="title=='Item'">
+         <div class="item item-divider">
+               <div style="display:inline-block;width:33%">group</div><div style="display:inline-block;width:33%">Name</div><div style="display:inline-block;width:33%">price</div>
+          </div>
+
+   <div class="item" ng-repeat="item in itemLists"  ng-click="openModal($index)">
+          <div style="display:inline-block;width:33%"> {{item.category.name}} </div><div style="display:inline-block;width:33%">{{item.name}}</div>
+          <div style="display:inline-block;width:33%">${{item.price}}</div>
+
+  </div>
+   
+</div>
+
+
+  <div class="list" ng-if="title=='Option'">
+   
+  
+
+   <div class="item item-divider">
+         <div style="display:inline-block;width:33%"> Name </div><div style="display:inline-block;width:33%">Value</div><div style="display:inline-block;width:33%">price</div>
+    </div>
+
+   <div class="item" ng-repeat="item in optionLists"  ng-click="openModal($index)">
+    <div style="display:inline-block;width:33%"> {{item.group}} </div><div style="display:inline-block;width:33%">{{item.name}}</div><div style="display:inline-block;width:33%">${{item.price}}</div>
+
+  </div>
+   
+</div>
+
+</ion-view>
+
+

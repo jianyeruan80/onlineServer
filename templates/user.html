@@ -1,0 +1,101 @@
+<ion-view view-title="User Manager">
+
+
+
+   <ion-nav-bar class="bar-stable">
+   <ion-nav-buttons side="right"> <button ng-click="openUserModal()">New</button>&nbsp;&nbsp;<button ng-click="auth()" ng-if="!!config.selectUserId">Authorize</button>  </ion-nav-buttons>
+    </ion-nav-bar>
+
+
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content style="margin-left:-100px;border-right:solid #ccc 175px"> 
+<ion-content>
+
+
+  
+<div class="list">
+    <div class="item item-divider">
+    <div style="display:inline-block;width:50%">RoleList</div></div>
+    
+     <div class="flex-container">
+      <div  class="flex-item2" ng-repeat="item in appData.roles" ng-click="roleEdit($index)">
+
+      <label class="admin--label" style="margin-top:-15px;">
+        <input class="admin--radio" type="checkbox"  ng-model="item.key"  ng-click="getSelectRolePerms($event)"  ng-true-value="'{{item._id}}'"  ng-false-value="'0'">
+        <span class="admin--checkbox admin--radioInput"></span>
+      </label> {{item.name}}
+
+ </div>
+      </div>
+
+
+    
+    <div ng-repeat-end>
+          <span style="inline-block;width:20%;height:40px;line-height:40px;paddind:8px;word-wrap:break-word;" ng-repeat-start="obj in item.perms | orderBy:['subject','perm'] "
+      data-perm="{{obj.value}}"    ng-click="getRolePerm($event)">
+                     {{obj.subject}}-{{obj.action}}-[{{obj.perm}}] 
+                   </span>
+         <label class="admin--label" ng-repeat-end>
+              <input   class="admin--radio" type="checkbox" ng-model="obj.key" 
+                 ng-true-value="'{{obj.value}}'" ng-false-value="'0'" /><span class="admin--checkbox admin--radioInput"></span>
+          </label>
+
+
+
+
+           
+   </div>
+   
+        
+ 
+</div>
+
+
+<div class="item" style="border-bottom:0;height:0px;">&nbsp;</div>
+    <div class="list">
+     <div class="item item-divider">Permission List</div>
+  <div class="item item-divider" ng-repeat-start="item in appData.perms">
+
+                 <label class="admin--label" style="margin-top:-10px;margin-left:-6px">
+                <input class="admin--radio" type="checkbox" id="allCheckboxUser{{item._id}}" ng-click="all($event)" data-permground="{{item._id}}" >
+                <span class="admin--checkbox admin--radioInput"></span>{{item._id}}
+            </label>
+  </div>
+  <div class="flex-container" ng-repeat-end>
+      
+      <div  ng-class="{'flex-item':true,'statusDisable':!obj.status,'special':!!obj.merchant_ids}" ng-repeat="obj in item.perms | orderBy:['subject','perm'] " data-perm="{{obj.value}}"    ng-click="permFind($event)" title="{{obj.merchant_ids}}">
+       
+       <label class="admin--label" style="margin-top:-10px;" ng-click="stop($event)">
+         <input   class="admin--radio" type="checkbox" ng-model="obj.key" 
+                 ng-true-value="'{{obj.value}}'" ng-false-value="'0'" />
+        <span class="admin--checkbox admin--radioInput"></span>
+        </label> {{obj.subject}}-{{obj.action}}-[{{obj.perm}}] 
+       </div>
+
+
+      </div>
+</div>
+</ion-content>
+
+  </ion-side-menu-content>
+
+  <ion-side-menu side="left" expose-aside-when="(min-width:10px)"> 
+
+    <ion-content  style="width:180px">
+    
+<div class="list">
+    <div class="item item-divider">User List</div>
+
+     <div class="item" ng-repeat="item in appData.users" ng-click="getUser($index)">
+       {{item.userName}}
+         <label class="admin--label" style="position:absolute;right:0px;top:-5px" ng-click="getUserPerm($event)">
+        <input class="admin--radio" type="radio" name="admin-radio" ng-model="config.selectUserId" value="{{item._id}}">
+        <span class="admin--radioInput"></span>
+    </label>
+     </div>
+
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>
+ 
+</ion-view>

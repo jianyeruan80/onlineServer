@@ -1,0 +1,41 @@
+  <ion-modal-view class="openmodal">
+          <ion-header-bar>
+             <h1 class = "title">Customer</h1>
+             <button class = "button icon icon-right ion-ios-close-outline" ng-click = "openCustomerOption()"></button>
+        <!--      <button class = "button icon icon-right ion-ios-close-outline" ng-click = "closeGroup()"></button>
+             <button class = "button icon icon-right ion-ios-close-outline" ng-click = "closeGroup()"></button>
+         -->        <ion-nav-bar class="bar-stable">
+        
+        <ion-nav-buttons side="right"> 
+<!--         <button class = "button icon icon-right" ng-click = "openOption()">globleOption</button>&nbsp;&nbsp;
+        <button class = "button icon icon-right" ng-click = "openOption()">customerOption</button>&nbsp;&nbsp; -->
+        <button class = "button icon icon-right ion-ios-close-outline" ng-click = "closeCustomerOption()"></button> </ion-nav-buttons>
+   </ion-nav-bar>
+          </ion-header-bar>
+          <ion-content>
+<div class="formcontainer">
+    
+     <form enctype="multipart/form-data" method="post" name="customerForm" ng-submit="customerUpdate()" >
+    <div style="display:flex; justify-content: space-between;flex-flow:row wrap">
+       <input type="file" name="picture" id="customerPicture" style="display:none" onchange="angular.element(this).scope().showPreview(this,'customerForm')"/>
+      <input  placeholder="Email" type="text" ng-model="customerData.customer.email"  class="clo32 required" required/>
+      <input  placeholder="phoneNum1" type="text" ng-model="customerData.customer.phoneNum1"   class="clo32" />
+      <input  placeholder="phoneNum2" type="text" ng-model="customerData.customer.phoneNum2"   class="clo32" />
+      <input  placeholder="firstName" type="text" ng-model="customerData.customer.firstName"   class="clo32" />
+      <input  placeholder="lastName" type="text" ng-model="customerData.customer.lastName"   class="clo32" />
+       <input  placeholder="address" type="text" ng-model="customerData.customer.address"   class="clo32" />
+       
+
+        <input  placeholder="wechat" type="text" ng-model="customerData.customer.wechat"   class="clo32" />
+         <input  placeholder="facebook" type="text" ng-model="customerData.customer.facebook"   class="clo32"  step="0.01" />
+         <ion-checkbox ng-model="customerData.customer.status"  ng-true-value="true" ng-false-value="false" class="clo32" style="border:0;height:40px;" >Status</ion-checkbox>
+    
+     
+    
+</div>
+     <div class="submit">
+      <input type="submit" value="Save" id="form_button" />
+    </div>
+  </form>
+</div>
+         </ion-content></ion-modal-view>

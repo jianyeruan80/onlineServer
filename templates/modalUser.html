@@ -1,0 +1,41 @@
+<ion-modal-view class="openmodal">
+      <ion-header-bar>
+         <h1 class = "title">User</h1>
+         <button class = "button icon icon-right ion-ios-close-outline" 
+            ng-click = "closeUserModal()"></button>
+      </ion-header-bar>
+      <ion-content>
+ <form  ng-submit="userUpdate()">
+     <div class = "row item"  style="text-align:center;"><div class = "col col-50"><ion-checkbox ng-model="appData.user.status"   ng-true-value="true" ng-false-value="false" >Status</ion-checkbox> </div>
+     
+    </div>
+  
+
+
+   <div class = "row item"   style="text-align:center;">
+   <div class = "col col-50"><input   placeholder="userName"  ng-model="appData.user.userName"  style="width:90%" required/><span style="color:red">*</span></div>
+   <div class = "col col-50"><input   placeholder="password" ng-model="appData.user.password"  style="width:90%"  required/><span style="color:red">*</span></div>
+   </div>
+
+
+   <div class = "row item"  style="text-align:center;">
+   <div class = "col col-50"><input   placeholder="firstName" ng-model="appData.user.first_name"   style="width:90%"/></div>
+   <div class = "col col-50"><input   placeholder="lastName" ng-model="appData.user.last_name"  style="width:90%"/></div>
+   </div>
+      <div class = "row item"  style="text-align:center;">
+   <div class = "col col-50"><input   placeholder="phone_num1" ng-model="appData.user.phone_num1"  style="width:90%" /></div>
+   <div class = "col col-50"><input   placeholder="email"  ng-model="appData.user.email"  style="width:90%" /></div>
+   </div>
+    <div class = "row item">
+   <div class = "col col-center" style="text-align:center;">
+    <input   placeholder="description" ng-model="appData.user.description"  style="width:95%;margin:auto;"/>
+      </div>
+  </div>  
+<div style="width:100%;text-align:center;margin-top:20px;font-size:600;font-size:30px;">
+      
+      
+ <input type="submit" value="Submit" class="button button-large button-positive" />
+
+    </div>
+</form>
+     </ion-content></ion-modal-view>

@@ -1,0 +1,1 @@
+C:\Users\jianyeruan>docker run -it --volumes-from=data -p 3100:3100 --link mongo:mongo -e APPPATH="licenseServer" --rm jianyeruan/node /run.sh supervisor app.js

@@ -1,0 +1,17 @@
+<ion-view view-title="login" class="login-container">
+
+  
+<div class="login">
+  <div class="login-triangle"></div>
+  
+  <h2 class="login-header">Super Admin</h2>
+
+  <form class="login-centent" ng-submit="doLogin()">
+    <p><input type="text" placeholder="username" ng-model="loginData.userName" required></p>
+    <p><input type="password" placeholder="Password" ng-model="loginData.password" required></p>
+    <p><input type="text" placeholder="merchantId" ng-model="loginData.merchantId" required></p>
+    <p><input type="submit" value="Log in"></p>
+  </form>
+</div>
+  
+</ion-view>

@@ -1,0 +1,26 @@
+
+         <ion-modal-view class="openmodal">
+          <ion-header-bar>
+             <h1 class = "title">Store Hours</h1>
+             <button class = "button icon icon-right ion-ios-close-outline" 
+                ng-click = "closeHourModal()"></button>
+          </ion-header-bar>
+          <ion-content>
+       <div class="formcontainer">
+        <form ng-submit="hourUpdate()" style="width:100%;text-align:center;" class="formcontainer">
+       <div style="display:flex; justify-content: space-between;flex-flow:row wrap">
+        <input  placeholder="name"  type="text" ng-model="managerData.storeHour.name" class="clo32 required" required>
+          <input  placeholder="From Time" type="time" ng-model="managerData.storeHour.fromTime" class="clo32 required" required>
+          <input  placeholder="To Time" type="time" ng-model="managerData.storeHour.toTime" class="clo32 required" required>
+         
+           <label class="admin--label" ng-repeat="item in showDate" style="width:14%">
+                  <input class="admin--radio" type="checkbox" ng-true-value="'{{item.key}}'" ng-model="item.value"  >
+                  <span class="admin--checkbox admin--radioInput"></span>{{item.key}}
+              </label>
+
+              
+       </div>
+              
+              <input type="submit" value="Save" style="margin:25px;">
+</div>
+         </ion-content></ion-modal-view>

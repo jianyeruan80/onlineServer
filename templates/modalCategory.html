@@ -1,0 +1,42 @@
+ <ion-modal-view class="openmodal">
+          <ion-header-bar>
+             <h1 class = "title">Category</h1>
+             <button class = "button icon icon-right ion-ios-close-outline" 
+                ng-click = "closeCategory()"></button>
+          </ion-header-bar>
+          <ion-content>
+    <div class="formcontainer">
+        <div class="icon_wrapper" ng-click="uploadPicture('categoryPicture')" > <!-- onerror="defaultImg()"  -->
+      <img src="{{CONFIG.path}}/{{appData.category.picture?appData.category.picture:'default.jpg'}}" onerror="defaultImg()" id="categoryPictureSrc" alt="Image not found"   width="100px" />
+    </div>
+     <form enctype="multipart/form-data" method="post" name="categoryForm" ng-submit="categoryUpdate()" >
+    <div style="display:flex; justify-content: space-between;flex-flow:row wrap">
+      <input type="file" name="picture" id="categoryPicture" style="display:none" onchange="angular.element(this).scope().showPreview(this,'categoryForm')"/>
+      <input  placeholder="category Name" type="text" ng-model="appData.category.name"  class="clo32 required" required/>
+      <input  placeholder="second language" type="text" ng-model="appData.category.language.name.second"   class="clo32" />
+      <input  placeholder="third language" type="text" ng-model="appData.category.language.name.third"   class="clo32" />
+      <select ng-model="appData.category.group" class="clo23 required">
+        
+          <option value="{{item._id}}" ng-repeat="item in appData.groups">{{item.name}}</option>
+        </select>
+
+        <input  placeholder="Order" type="Number" ng-model="appData.category.order"   class="clo23"  step="0.01" />
+      <ion-checkbox ng-model="appData.category.status"  ng-true-value="true" ng-false-value="false"  class="clo23" style="border:0;height:40px;" >Status</ion-checkbox>
+
+
+
+      <input  placeholder="Description" type="text" ng-model="appData.category.description"   class="clo32" />
+      <input  placeholder="second language" type="text" ng-model="appData.category.language.description.second"   class="clo32" />
+      <input  placeholder="third language" type="text" ng-model="appData.category.language.description.third"   class="clo32" />
+      
+       
+    
+
+    
+</div>
+     <div class="submit">
+      <input type="submit" value="Save" id="form_button" />
+    </div>
+  </form>
+</div>
+         </ion-content></ion-modal-view>

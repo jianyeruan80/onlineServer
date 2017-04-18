@@ -1,0 +1,23 @@
+<ion-view view-title="Options">
+   <ion-nav-bar class="bar-stable">
+        
+        <ion-nav-buttons side="right"> <button ng-click="openOption('P')">New</button>&nbsp;&nbsp; </ion-nav-buttons>
+   </ion-nav-bar>
+  <ion-content>
+  <div class="list" ng-repeat="item in appData.optionGroups track by $index">
+   <div class="item item-divider"  ng-click="openOption('P',$index)">
+         <div style="display:inline-block;width:33%">GroupName:{{item.group}}  </div>
+         <div style="display:inline-block;width:77%">{{item.minimun}}~ {{item.maximun}}</div>
+         <div style="display:inline-block;width:33%">Maximun:{{item.maximun}}</div>
+    </div>
+   <div class="item" ng-repeat="se in item.options track by $index" ng-click="openOption('S',$parent.$index,$index)">
+		     <div style="display:inline-block;width:33%">Name:{{se.name}}</div>
+		     <div style="display:inline-block;width:33%">price:{{se.name}}</div>
+		     <div style="display:inline-block;width:33%"></div>
+   </div>
+   <div style="text-align:right;font-size:30px;width:100%;padding:10px 50px;" ng-click="openOption('S',$index)">+</div>
+
+  </div>
+
+</ion-content>
+</ion-view>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .kuang{text-align: center;margin-top:200px;}
+        #mess{text-align: center}
+        .value{width: 200px;height:200px;border:1px solid;text-align: center;line-height: 200px;display: inline-block;}
+    </style>
+</head>
+<body>
+    <div id="mess">正在连接...</div>
+    <div class="kuang">
+        <div class="value" id="value1">AAAAAAAAAA连</div>
+        <div class="value" id="value2">BBBBBBBBBBB</div>
+        <div class="value" id="value3">CCCCCCCCCCC</div>
+    </div>
+
+    <script>
+        var mess = document.getElementById("mess");
+        if(window.WebSocket){
+                  var ws = new WebSocket('ws://67.243.162.74:1337/','echo-protocol');
+
+            ws.onopen = function(e){
+                console.log("连接服务器成功");
+                ws.send('{"customer":"client"}');
+            }
+            ws.onclose = function(e){
+                console.log("服务器关闭");
+            }
+            ws.onerror = function(){
+                console.log("连接出错");
+            }
+
+            ws.onmessage = function(e){
+				
+                mess.innerHTML = e.data;
+                document.querySelector(".kuang").onclick = function(e){
+                    var time = new Date();
+					//alert("OK");
+                   // ws.send(time + "  连接成功game1在" + e.target.innerHTML);
+					var cmd = '{"from":"client","to":"M01",value:"Togo"}';
+					ws.send(cmd);
+
+                }
+            }
+        }
+    </script>
+</body>
+</html>

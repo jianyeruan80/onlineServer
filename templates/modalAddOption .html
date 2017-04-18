@@ -1,0 +1,47 @@
+
+         <ion-modal-view class="openmodal">
+          <ion-header-bar>
+             <h1 class = "title">AddOptions</h1>
+             <button class = "button icon icon-right ion-ios-close-outline" 
+                ng-click = "claseOption()"></button>
+          </ion-header-bar>
+          <ion-content>
+
+
+       <div class="formcontainer">
+  <div class="icon_wrapper" ng-click="uploadPicture('optionPicture')"  ng-if="appData.optionSign=='S'"> <!-- onerror="defaultImg()"  -->
+      
+       <img src="{{CONFIG.path}}{{appData.option.picture?appData.option.picture:'defalut.jpg'}}" id="optionPictureSrc"   onerror="defaultImg()" width="100px"  />
+   
+    </div>
+
+        <!-- <form ng-submit="optionGroupUpdate()" style="width:100%;text-align:center;" class="formcontainer"> -->
+        <form enctype="multipart/form-data" method="post" name="optionForm"  ng-submit="optionGroupUpdate()" style="width:100%;text-align:center;" class="formcontainer">
+
+          <div style="display:flex; justify-content: space-between;flex-flow:row wrap" ng-if="appData.optionSign=='P'">
+          
+          <input  placeholder="group"  type="text" ng-model="appData.optionGroup.group" class="clo32 required">
+          <input  placeholder="secondLauguage" type="text" ng-model="appData.optionGroup.language.group.second" class="clo32 required">
+          <input  placeholder="thirdLauguage" type="text" ng-model="appData.optionGroup.language.group.third" class="clo32 required">
+         
+          <input  placeholder="minimun"  type="text" ng-model="appData.optionGroup.minimun" class="clo32 required">
+          <input  placeholder="maximun" type="text" ng-model="appData.optionGroup.maximun" class="clo32 required">
+          <input  placeholder="order" type="text" ng-model="appData.optionGroup.order" class="clo32 required">
+       </div>     
+
+
+                 <div style="display:flex; justify-content: space-between;flex-flow:row wrap" ng-if="appData.optionSign=='S'">
+                  <input type="file" name="picture" id="optionPicture" style="display:none" onchange="angular.element(this).scope().showPreview(this,'optionForm')"/>
+                    <input  placeholder="name"  type="text" ng-model="appData.option.name" class="clo32 required">
+                    <input  placeholder="secondLauguage" type="text" ng-model="appData.option.language.name.second" class="clo32 required">
+                    <input  placeholder="thirdLauguage" type="text" ng-model="appData.option.language.name.third" class="clo32 required">
+                    <input  placeholder="price"  type="Number" ng-model="appData.option.price" class="clo32 required">
+                 </div>
+
+
+
+
+              
+              <input type="submit" value="Save" style="margin:25px;">
+</div>
+         </ion-content></ion-modal-view>

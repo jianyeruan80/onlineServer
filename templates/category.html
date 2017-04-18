@@ -1,0 +1,31 @@
+<ion-view view-title="Group">
+   <ion-nav-bar class="bar-stable">
+        
+        <ion-nav-buttons side="right"> <button ng-click="openCategory()">New</button>&nbsp;&nbsp; </ion-nav-buttons>
+   </ion-nav-bar>
+  
+  <ion-content>
+
+
+<div class="list" ng-repeat="item in appData.categoryGroups">
+  <div class="item item-divider">
+    {{item.name}}
+  </div>
+  <div class="item item-text-wrap" ng-repeat="itemSec in item.categorys_docs"  ng-click="openCategory('{{itemSec._id}}')">
+    <b>{{$index+1}},</b>&nbsp;{{itemSec.name}}
+    <img  ng-src="{{CONFIG.path}}/{{itemSec.picture?itemSec.picture:'default.jpg'}}" onerror="defaultImg()" style="position:absolute;right:10px;top:5px;width:30px;height:30px;border-radius:5px;" />
+  </div>
+  
+
+  <!--     <div ng-repeat="item in storeInfo.categorys" style="font-size:14px;position:relative;width:220px;height:50px;border:solid #ddd 2px;margin:10px;line-height:50px;border-radius:5px;text-align:center;overflow:hidden" 
+      ng-click="openCategory($index)">
+      <p>{{item.name}}
+
+      
+      <img  src="{{CONFIG.path}}{{CONFIG.info.merchantId}}/{{item.picture?item.picture:''}}" onerror="defaultImg()" style="position:absolute;right:0;top:0;width:30px;height:30px;border-radius:5px;" />
+
+  -->
+    </div>
+
+  </ion-content>
+</ion-view>

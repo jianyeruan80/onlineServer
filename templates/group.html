@@ -1,0 +1,17 @@
+<ion-view view-title="Group">
+   <ion-nav-bar class="bar-stable">
+        
+        <ion-nav-buttons side="right"> <button ng-click="openGroup()">New</button>&nbsp;&nbsp; </ion-nav-buttons>
+   </ion-nav-bar>
+  <ion-content>
+   
+  <div style="display:flex;flex-flow:row wrap;align-content:space-between;font-size:20px;" >
+      <div ng-repeat="item in appData.groups" style="font-size:14px;position:relative;width:220px;height:50px;border:solid #ddd 2px;margin:10px;line-height:50px;border-radius:5px;text-align:center;overflow:hidden" 
+      ng-click="openGroup($index)" title="{{item.order}}"> {{item.name}}
+      <img   style="position:absolute;right:0;top:0;width:30px;height:30px;border-radius:5px;" ng-src="{{CONFIG.path}}{{item.picture?item.picture:'defalut.jpg'}}"  onerror="defaultImg()"/>
+
+
+    </div>
+
+</ion-view>
+

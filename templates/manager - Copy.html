@@ -1,0 +1,134 @@
+<ion-view view-title="{{title}}">
+   <ion-nav-bar class="bar-stable">
+        <!-- <ion-nav-buttons side="left">left </ion-nav-buttons> -->
+       
+    <ion-nav-buttons side="right"> <button ng-if="title !='Store Info'" ng-click="openManager()">New</button>
+
+      
+</ion-nav-bar>
+    
+
+  <ion-subheader-bar class="bar bar-subheader" style="padding:0;margin:0">
+  	
+<div style="width:33.33%;text-align:center;font-size:25px;line-height:1.2;border-right:solid #ccc 1px;padding:0;"  ng-class="{'current_select':title=='Store Info'}" ng-click="goToLink('Store Info')">Store Info</div>
+    <!-- <div style="width:25%;text-align:center;font-size:25px;line-height:1.2;padding:0;border-right:solid #ccc 1px;" ng-class="{'current_select':title=='Taxs'}" ng-click="goToLink('Taxs')">Taxs</div> -->
+  	 
+    <div style="width:33.33%;text-align:center;font-size:25px;line-height:1.2;padding:0;border-right:solid #ccc 1px;"  ng-class="{'current_select':title=='Store Hours'}" ng-click="goToLink('Store Hours')">Store Hours</div>
+    <div style="width:33.33%;text-align:center;font-size:25px;line-height:1.2;padding:0;" ng-class="{'current_select':title=='Setting'}" ng-click="goToLink('Setting')">Setting</div>
+  </ion-subheader-bar>  <!-- optional -->
+
+  <ion-content style="margin-top:50px;">
+<div class="formcontainer" ng-if="title=='Store Info'" >
+   <div class="icon_wrapper" ng-click="uploadPicture('picture')" >
+    <img src="{{CONFIG.path}}{{store.picture?store.picture:'defalut.jpg'}}" id="pictureSrc"   onerror="defaultImg()" width="100px"  />
+    
+   </div>
+  
+  <form enctype="multipart/form-data" method="post" name="storeForm" ng-submit="storeUpdate('storeForm')" >
+    <div style="display:flex; justify-content: space-between;flex-flow:row wrap">
+    <input type="file" name="picture" id="picture" style="display:none" onchange="angular.element(this).scope().showPreview(this,'storeForm')"/>
+    <input  placeholder="Stroe Name" type="text" ng-model="store.name"    style="width:48%; border-bottom:solid red 2px;" required/>
+    
+<input  placeholder="tax" type="Number" ng-model="store.tax"    style="width:48%; border-bottom:solid red 2px;" step="0.001" required/>
+    
+      
+    <input  placeholder="Webside" type="text" ng-model="store.webSite"   style="width:100%"/> 
+       <input type="text" placeholder="Phone Num1"  class="clo23"   ng-model="store.phoneNum1"/> 
+      <input type="text"  placeholder="Phone Num2"  class="clo23" ng-model="store.phoneNum2"/>  
+      <input type="text" placeholder="Email"  class="clo23"   ng-model="store.email"/> 
+      <input type="text" placeholder="Fax"  class="clo23"  ng-model="store.fax"/> 
+      <input type="text"  class="clo32" placeholder="state"    ng-model="store.addressInfo.state"/>  
+      <input type="text" class="clo32" placeholder="city"   ng-model="store.addressInfo.city"/> 
+      <input type="text"  class="clo32" placeholder="zipcode"  ng-model="store.addressInfo.zipcode"/> 
+      <input type="text"    placeholder="address"   ng-model="store.addressInfo.address"/>  
+      <!-- <input type="text"   placeholder="address2"   ng-model="store.addressInfo.address2"/> -->
+      <input type="text"   placeholder="open Time"   ng-model="store.opentime"/>  
+        
+      <input type="text"  placeholder="license Key"   ng-model="store.licenseKey"/>  
+    </div>
+     <div class="submit">
+      <input type="submit" value="Save" id="form_button" />
+    </div>
+  </form>
+</div>
+
+  
+   
+  
+
+ <div class="formcontainer" ng-if="title=='Setting'">
+ 
+               
+         <div class="item item-divider" ng-repeat-start="item in settingGroups">
+                 <div style="display:inline-block;width:33%"> {{item._id}}</div>
+            </div>
+              <div ng-repeat-end  style="display:flex; justify-content: space-between;flex-flow:row wrap;">
+                <div class="item"  ng-repeat="item in item.settings" 
+                ng-switch="item.inputType" style="width:50%">
+                     
+                            <div ng-switch-when="INPUT" style="display:inline;">{{item.name}} <input ng-model="item.value"/></div>
+
+                         
+
+                             <div  ng-switch-when="CHECKBOX" style="display:inline;" >
+                                    {{item.name}} <input type="checkbox"    ng-true-value="'{{item.name}}'"  ng-model="item.value" />
+                             </div>
+                            
+                            <div  ng-switch-when="CHECKBOXJSON" style="display:inline-block;width:33%" >
+                                    {{item.name}}
+                             </div>
+
+                            <div  ng-switch-when="RADIO" > 
+                                 {{item.name}}<input  value="{{item.name}}"  ng-model="item.value"  name="{{item.group}}" type="radio"  />
+                            </div>
+
+                             <div  ng-switch-when="RADIOJSON" style="display:inline-block;width:33%" > 
+                                  {{item.name}}
+                                    <select  class="clo32" ng-model="item.value"> <option value="{{sec}}" ng-repeat="sec in item.info">{{sec}}</option></select>
+                            
+                             </div>
+                  </div>      
+
+           </div> 
+
+
+                    <form ng-submit="managerUpdate()">
+             
+                 <div class="submit"><input type="submit" value="Save" id="form_button" /></div></form>                 
+              
+</div>
+   
+  
+   
+
+
+
+<div class="list" ng-if="title=='Taxs'">
+   <div class="item item-divider">
+         <div style="display:inline-block;width:30%"> Name </div><div style="display:inline-block;width:70%">tax Rate</div>
+    </div>
+
+   <div class="item" ng-repeat="item in storeTaxLists"  ng-click="openManager($index)">
+    <div style="display:inline-block;width:30%"> {{item.name}} </div><div style="display:inline-block;width:70%">{{item.tax_rate}}</div>
+
+  </div>
+   
+</div>
+
+<div class="list" ng-if="title=='Store Hours'">
+   <div class="item item-divider">
+         <div style="display:inline-block;width:25%"> Name </div><div style="display:inline-block;width:25%">Date</div><div style="display:inline-block;width:50%">Time</div>
+    </div>
+   <div class="item" ng-repeat="item in storeHourLists"  ng-click="openManager($index)">
+     <div style="display:inline-block;width:25%"> {{item.name}} </div><div style="display:inline-block;width:25%">
+     {{item.date}}
+     </div><div style="display:inline-block;width:50%">{{item.from_time}} ~ {{item.to_time}}</div>
+
+  </div>
+   
+</div>
+
+  
+
+</ion-content>
+</ion-view>
