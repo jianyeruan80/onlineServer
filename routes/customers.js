@@ -32,14 +32,14 @@ var express = require('express'),
        async.parallel({
        count: function (done) {
          console.log(query)
-         customers.count({}, function (err, data) {
+         customers.count(query, function (err, data) {
              if (err) return done(err,{});
               done(null,data);
          });
        },
        data: function (done) {
          var currentPage=info.page-1>0?info.page-1:1;
-          customers.find({}).skip(info.pageOnCount*(info.page-1)).limit(info.pageOnCount).exec(function (err, data) {
+          customers.find(query).skip(info.pageOnCount*(info.page-1)).limit(info.pageOnCount).exec(function (err, data) {
              if (err) return done(err,{});
              done(null,data);
         });

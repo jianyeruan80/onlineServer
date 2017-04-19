@@ -101,7 +101,7 @@ router.post('/decrypt',  function(req, res, next) {
            console.log(keyJSON);
         console.log(keyJSON.merchantId);
         if(keyJSON.merchantId==info.merchantId && keyJSON.active==true){
-            var currentDate=tools.defaultDate();
+            var currentDate=Date.now();
             var expires=new Date(keyJSON.expires);
          
 keyJSON.expiresTotal=Math.ceil(new Date(currentDate-expires).getTime()/(24*60*60*1000));
@@ -231,7 +231,7 @@ router.post('/',  security.ensureAuthorized,function(req, res, next) {
    info.operator={};
    info.operator.id=req.token.id;
    info.operator.user=req.token.user;
-   info.addressInfo.loc={
+   info.addressInfo.location={
       "type":"Point","coordinates":[40.751351,-73.8597127]
   }
   var arvind = new stores(info);
@@ -240,19 +240,23 @@ router.post('/',  security.ensureAuthorized,function(req, res, next) {
           res.json(data);
       });
 })
-router.put('/',  security.ensureAuthorized,function(req, res, next) {
+router.put('/:id',  security.ensureAuthorized,function(req, res, next) {
 var info=req.body;
-info.updatedAt=tools.defaultDate();
+info.updatedAt=Date.now();
 info.operator={};
 info.operator.id=req.token.id;
 info.operator.user=req.token.user;
 info.merchantId=req.token.merchantId;
 var query = {"merchantId": req.token.merchantId};
 var options = {new: true,upsert:true};
-
+if(!info.addressInfo || !info.addressInfo.location){
+  info.addressInfo.location={
+      "type":"Point","coordinates":[40.751351,-73.8597127]
+  }
+}
 //try{
   //info.addressInfo.40.7623381,-73.8474097 location.coordinates=info.addressInfo.location.coordinates?info.addressInfo.location.coordinates.split(","):[];}catch(ex){}
- stores.findOneAndUpdate(query,info,options,function (err, data) {
+ stores.findByIdAndUpdate(req.params.id,info,options,function (err, data) {
           if (err) return next(err);
           res.json(data);
     });
