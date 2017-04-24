@@ -20,7 +20,7 @@ var optionsSchema = new mongoose.Schema({
 
 var optionsGroupsSchema = new mongoose.Schema({ 
     merchantId:{type:String,lowercase: true, trim: true},
-    group:{type: "String",default:"Default"},
+    group:{type:String,default:"Default"},
     description:String,
     minimun:{type:Number,default:0},
     maximun:{type:Number,default:0},
@@ -40,7 +40,7 @@ var categoriesSchema = new mongoose.Schema({
     globalOptions:[{type: mongoose.Schema.Types.ObjectId,ref: 'globalOptionGroups'}],
     customerOptions:[optionsGroupsSchema],
     description:String,
-    status:{type:Boolean,default:true},
+    status:{type:String,default:"true"},
     order:{type:Number,default:1},
     picture:{type:String},
     items:[{type: mongoose.Schema.Types.ObjectId, ref: 'items'}],
@@ -54,7 +54,7 @@ var categoriesSchema = new mongoose.Schema({
     }
 });
 
-categoriesSchema.index({ name: 1, merchantId: 1 ,group:1 }, { unique: true,sparse:true});
+categoriesSchema.index({ name: 1, merchantId: 1 ,group:1,status:1 }, { unique: true,sparse:true});
 module.exports = mongoose.model('categories', categoriesSchema);
 /*{ createdAt: { type: Date, expires: 3600, default: Date.now }}
 OrderList.$.UserName","大叔2015-09-21

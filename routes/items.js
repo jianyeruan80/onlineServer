@@ -5,24 +5,22 @@ var express = require('express'),
     security = require('../modules/security'),
     categories = require('../models/categories'),
     async=require('async'),
-
-     tools = require('../modules/tools'),
+    tools = require('../modules/tools'),
     stores = require('../models/stores'),
     groups = require('../models/groups'),
     util = require('util'),
     returnData={},
     items = require('../models/items');
 
-router.get('/merchants/id', security.ensureAuthorized,function(req, res, next) {
-
-   
-
-     var query={"merchantId":req.token.merchantId};
-     
-       categories.find(query).populate({path:'items', options: { sort: { order: 1 }}}).sort({order:1}).exec(function(err, data) {
-       /*categories.find(query, function (err, data) {*/
+router.get('/merchantId', security.ensureAuthorized,function(req, res, next) {
+var query={"merchantId":req.token.merchantId};
+     //categories.find(query).populate({path:'items', 
+       // options: { sort: { order: 1 }}}).sort({order:1}).exec(function(err, data) {
+        categories.find(query).exec(function(err, data) {
         if (err) return next(err);
-       
+        console.log("====================");
+        console.log(data);
+        console.log("====================");
         res.json(data);
       });
      

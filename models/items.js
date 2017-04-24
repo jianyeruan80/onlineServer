@@ -22,7 +22,7 @@ var optionsSchema = new mongoose.Schema({
 
 var optionsGroupsSchema = new mongoose.Schema({ 
     merchantId:{type:String,lowercase: true, trim: true},
-    group:{type: "String",default:"Default"},
+    group:{type: String,default:"Default"},
     description:String,
     minimun:{type:Number,default:0},
     maximun:{type:Number,default:0},
@@ -50,18 +50,17 @@ var itemsSchema = new mongoose.Schema({
     globalOptions:[{type: mongoose.Schema.Types.ObjectId,ref: 'globalOptionGroups'}],
     customerOptions:[optionsGroupsSchema],
     size:[sizesSchema],
-    status:{type:Boolean,default:false},
+    status:{type:String,default:"true"},
     category:{ type: mongoose.Schema.Types.ObjectId, ref: 'categories',null: true },
     price:Number,
     picture:{type:String},
-    status:{type:Boolean,default:true},
+    status:{type:String,default:"true"},
     description:String,
     order:{type:Number,default:1},
     oldPrice:Number,
     unit:{type: String, enum: ['Case', 'LB', 'Bottle','Piece','Gram', 'Liter'],default:'Case'},
-    recommend:{type:Boolean,default:false},
-    compositions:[{inventoryItem:{type: mongoose.Schema.Types.ObjectId, ref: 'inventoryItems'},qty:Number}],
-    properties:[String],
+    /*compositions:[{inventoryItem:{type: mongoose.Schema.Types.ObjectId, ref: 'inventoryItems'},qty:Number}],*/
+    properties:[String],//recommend:{type:Boolean,default:false}
     operator:{
     id:{type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     user:String
@@ -71,7 +70,7 @@ var itemsSchema = new mongoose.Schema({
          description:lauguagesSchema
     }
 });
-itemsSchema.index({ name: 1, merchantId: 1,category:1 }, { unique: true,sparse:true});
+itemsSchema.index({ name: 1, merchantId: 1,category:1,status:1 }, { unique: true,sparse:true});
 module.exports = mongoose.model('items', itemsSchema);
 /*{ createdAt: { type: Date, expires: 3600, default: Date.now }}
 OrderList.$.UserName","大叔2015-09-21

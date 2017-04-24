@@ -10,11 +10,11 @@ var express = require('express'),
 groups = require('../models/groups');
 
 
-router.get('/merchants/id', security.ensureAuthorized,function(req, res, next) {
+router.get('/merchantId', security.ensureAuthorized,function(req, res, next) {
  var query={"merchantId":req.token.merchantId};
      
-       groups.find(query).populate({
-    path: 'categories'
+       categories.find(query).populate({
+    path: 'items'
 /*  , select: 'name'
   , match: { color: 'black' }*/
   , options: { sort: { order: 1 }}
@@ -53,9 +53,13 @@ router.put('/sort/:id', security.ensureAuthorized,function(req, res, next) {
 router.get('/', security.ensureAuthorized,function(req, res, next) {
 var query={"merchantId":req.token.merchantId};
      
-       categories.find(query).exec(function(err, data) {
-       /*categories.find(query, function (err, data) {*/
+       categories.find(query).populate({
+    path: 'items'
+
+  , options: { sort: { order: 1 }}}).exec(function(err, data) {
+       
         if (err) return next(err);
+
         res.json(data);
       });
      
@@ -106,34 +110,26 @@ router.get('/:id', security.ensureAuthorized,function(req, res, next) {
 router.post('/',  security.ensureAuthorized,function(req, res, next) {
    var info=req.body;
    info.merchantId=req.token.merchantId; 
-   var arvind = new categories(info);
-      info.operator={};
-info.operator.id=req.token.id;
-info.operator.user=req.token.user;
-   arvind.save(function (err, data) {
-   if (err) return next(err);
-            var query={"_id":data.group}
-            var update={ $addToSet: {categories: data._id } };
-            groups.findOneAndUpdate(query,update,{},function (err, data2) {
-                  if (err) return next(err);
-                   res.json(data);
-            });
-           //res.json(data);
+   info.operator={};
+   info.operator.id=req.token.id;
+   info.operator.user=req.token.user;
+   var dao = new categories(info);
+       dao.save(function (err, data) {
+    if (err) return next(err);
+     
+           res.json(data);
       });
 })
 router.put('/:id',  security.ensureAuthorized,function(req, res, next) {
 var info=req.body;
-
-var id=req.params.id;
-info.updatedAt=tools.defaultDate();
-var query = {"_id": id};
-var options = {new: false};
-   info.operator={};
-info.operator.id=req.token.id;
-info.operator.user=req.token.user;
- categories.findOneAndUpdate(query,info,options,function (err, data) {
+    info.updatedAt=Date.now();
+    info.operator={};
+    info.operator.id=req.token.id;
+    info.operator.user=req.token.user;
+ categories.findByIdAndUpdate(req.params.id,info,{new:true},function (err, data) {
           if (err) return next(err);
-            var query={"_id":info.group};
+          res.json(data);
+/*            var query={"_id":info.group};
             var update={ $addToSet: {categories: data._id } };
           if(info.group != data.group){
                
@@ -147,32 +143,26 @@ info.operator.user=req.token.user;
                               //res.json(data);
                               res.json(data);
                         });
-                  // res.json(data);
+                  
               });
             
 
           }else{
             res.json(data);
           }
-
+*/
 
           
     });
 })
 
 router.delete('/:id', security.ensureAuthorized,function(req, res, next) {
-     categories.findByIdAndRemove(req.params.id,function (err, data) {
-        if (err) return next(err);
-            var query={"_id":data.group}
-            var update={ $pull: {categories: data._id } };
-            groups.findOneAndUpdate(query,update,{},function (err, data2) {
+         categories.findByIdAndUpdate(req.params.id,{"status":Date.now()},{new:true},function (err, data) {
                   if (err) return next(err);
                     res.json(data);
             });
           
-          
-         // res.json(data);
-      });
+
 });
 
 module.exports = router;

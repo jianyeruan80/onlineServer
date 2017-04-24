@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
       });
      
 });
-router.get('/merchants/:id', security.ensureAuthorized,function(req, res, next) {
+router.get('/merchantId', security.ensureAuthorized,function(req, res, next) {
 
      var query={"merchantId":req.token.merchantId};
 
@@ -39,8 +39,8 @@ router.post('/',  security.ensureAuthorized,function(req, res, next) {
        info.operator={};
 info.operator.id=req.token.id;
 info.operator.user=req.token.user;
-   var arvind = new optionGroups(info);
-   arvind.save(function (err, data) {
+   var dao = new optionGroups(info);
+   dao.save(function (err, data) {
    if (err) return next(err);
           res.json(data);
       });
@@ -50,11 +50,8 @@ var info=req.body;
    info.operator={};
 info.operator.id=req.token.id;
 info.operator.user=req.token.user;
-var id=req.params.id;
-info.updatedAt=tools.defaultDate();
-var query = {"_id": id};
-var options = {new: true};
- optionGroups.findOneAndUpdate(query,info,options,function (err, data) {
+info.updatedAt=Date.now();
+ optionGroups.findByIdAndUpdate(req.params.id,info,{new:true},function (err, data) {
           if (err) return next(err);
           res.json(data);
     });
@@ -62,7 +59,16 @@ var options = {new: true};
 
 
 router.delete('/:id', security.ensureAuthorized,function(req, res, next) {
-   var info=req.body;
+  var info=req.body;
+   info.operator={};
+info.operator.id=req.token.id;
+info.operator.user=req.token.user;
+info.updatedAt=Date.now();
+ optionGroups.findByIdAndUpdate(req.params.id,{"status":Date.now()},{new:true},function (err, data) {
+          if (err) return next(err);
+          res.json(data);
+    });
+   /*var info=req.body;
    if(info.subId){
       optionGroups.findOneAndUpdate( {"_id":req.params.id}, {$pull: {options:{ '_id': info.subId }}},function(err,data){
        if (err) return next(err);
@@ -74,7 +80,7 @@ router.delete('/:id', security.ensureAuthorized,function(req, res, next) {
           res.json(data);
       });
    }
-
+*/
      
 });
 
