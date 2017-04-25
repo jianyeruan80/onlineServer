@@ -144,102 +144,39 @@ router.get('/:id', security.ensureAuthorized,function(req, res, next) {
 
 router.post('/',  security.ensureAuthorized,function(req, res, next) {
    var info=req.body;
-   info.merchantId=req.token.merchantId; 
-     info.operator={};
+       info.merchantId=req.token.merchantId; 
+       info.operator={};
        info.operator.id=req.token.id;
        info.operator.user=req.token.user;
-   
-   if(info.groupName){
-      var groupDao=new groups({"merchantId":info.merchantId,"name":info.groupName});
-       groupDao.save(function (err, groupData) {
-          if (err) return next(err);
-             if(info.categoryName){
-                var categoryDao=new categories({"merchantId":info.merchantId,"name":info.categoryName,"group":groupData._id});
-                   categoryDao.save(function (err, categoryData) {
-                      if (err) return next(err);
-                        var query={"_id":groupData._id}
-                        var update={ $addToSet: {categories: categoryData._id } };
-                         groups.findOneAndUpdate(query,update,{},function (err, groupData) {
-                              if (err) return next(err);
-                               info.category=categoryData._id;
-				 var dao = new items(info);
-   dao.save(function (err, data) {
-   if (err) return next(err);
-            var query={"_id":data.category}
-            var update={ $addToSet: {items: data._id } };
-            categories.findOneAndUpdate(query,update,{},function (err, data2) {
-                  if (err) return next(err);
-                   res.json(data);
-            });
-         // res.json(data);
-      });
-                   
-     });
-                   })
-             }
+        var dao = new items(info);
+        dao.save(function (err, data) {
+        if (err) return next(err);
+          res.json(data);
        })
-   }else{
-   
-   var dao = new items(info);
-   dao.save(function (err, data) {
-   if (err) return next(err);
-            var query={"_id":data.category}
-            var update={ $addToSet: {items: data._id } };
-            categories.findOneAndUpdate(query,update,{},function (err, data2) {
-                  if (err) return next(err);
-                   res.json(data);
-            });
-         // res.json(data);
-      });
-  }
 })
 router.put('/:id',  security.ensureAuthorized,function(req, res, next) {
-   
-var info=req.body;
-var id=req.params.id;
-info.updatedAt=tools.defaultDate();
-  info.operator={};
+   var info=req.body;
+       info.updatedAt=Date.now();
+       info.operator={};
        info.operator.id=req.token.id;
        info.operator.user=req.token.user;
-var query = {"_id": id};
-var options = {new: false};
- items.findOneAndUpdate(query,info,options,function (err, data) {
+       items.findByIdAndUpdate(req.params.id,info,{new:true},function (err, data) {
           if (err) return next(err);
-            var query={"_id":info.category};
-            var update={ $addToSet: {items: data._id } };
-          if(info.category != data.category){
-                categories.findOneAndUpdate(query,update,{},function (err, data2) {
-                  if (err) return next(err);
-                     query={"_id":data.category};
-                    update={ $pull: {items: data._id } };
-                    categories.findOneAndUpdate(query,update,{},function (err, data2) {
-                        if (err) return next(err);
-                          res.json(data);
-                         // res.json(data);
-                    });
-                 
-              });
-           
-               
-          }else{
-            res.json(data);
-          }
-
-    });
+           res.json(data);
+     })      
 })
 
 router.delete('/:id', security.ensureAuthorized,function(req, res, next) {
-     items.findByIdAndRemove(req.params.id, function (err, data) {
-        if (err) return next(err);
-              var query={"_id":data.category}
-              var update={ $pull: {items: data._id } };
-              categories.findOneAndUpdate(query,update,{},function (err, data2) {
-                    if (err) return next(err);
-                      res.json(data);
-              });
-              
-             // res.json(data);
-      });
+      var info=req.body;
+       info.updatedAt=Date.now();
+       info.operator={};
+       info.operator.id=req.token.id;
+       info.operator.user=req.token.user;
+       info.status=Date.now();
+       items.findByIdAndUpdate(req.params.id,info,{new:true},function (err, data) {
+          if (err) return next(err);
+           res.json(data);
+     })      
 });
 
 module.exports = router;

@@ -11,20 +11,39 @@ groups = require('../models/groups');
 
 
 router.get('/merchantId', security.ensureAuthorized,function(req, res, next) {
- var query={"merchantId":req.token.merchantId};
-     
-       categories.find(query).populate({
+ var query={"merchantId":req.token.merchantId,"status":"true"};
+       
+       categories.aggregate([
+          {$match:query},
+          {
+        $lookup:
+     {
+       from: "items",
+       localField: "_id",
+       foreignField: "category",
+       as: "itemsDoc"
+     }
+}
+        ],function(err,data){
+        if (err) return next(err);
+          console.log("===========");
+          console.log(data);
+          console.log("===========");
+          res.json(data);
+
+})
+/*       categories.find(query).populate({
     path: 'items'
 
   , options: { sort: { order: 1 }}
 }).exec(function(err, data) {
-       /*categories.find(query, function (err, data) {*/
+       
         if (err) return next(err);
            
     
           res.json(data);
       });
-     
+     */
 });
 
 router.put('/sort/:id', security.ensureAuthorized,function(req, res, next) {
