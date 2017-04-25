@@ -15,8 +15,7 @@ router.get('/merchantId', security.ensureAuthorized,function(req, res, next) {
      
        categories.find(query).populate({
     path: 'items'
-/*  , select: 'name'
-  , match: { color: 'black' }*/
+
   , options: { sort: { order: 1 }}
 }).exec(function(err, data) {
        /*categories.find(query, function (err, data) {*/
@@ -99,10 +98,18 @@ router.get('/groups/:id', security.ensureAuthorized,function(req, res, next) {
 });
 router.get('/:id', security.ensureAuthorized,function(req, res, next) {
       log.debug(req.token);
-      categories.findById(req.params.id, function (err, data) {
+      
+     
+       categories.findOne({"_id":req.params.id}).populate({
+    path: 'items'
+
+  , options: { sort: { order: 1 }}
+}).exec(function(err, data) {
+      
         if (err) return next(err);
-        console.log(data)
-         res.json(data);
+           
+    
+          res.json(data);
       });
      
 });
