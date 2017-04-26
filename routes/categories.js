@@ -14,7 +14,7 @@ router.get('/merchantId', security.ensureAuthorized,function(req, res, next) {
  var query={"merchantId":req.token.merchantId,"status":"true"};
        
        categories.aggregate([
-          {$match:query},
+      {$match:query},
           {
         $lookup:
      {
