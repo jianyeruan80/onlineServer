@@ -27,7 +27,7 @@ var query={"merchantId":req.token.merchantId};
 });
 router.get('/categories/:id', security.ensureAuthorized,function(req, res, next) {
 
-     var query={"category":req.params.id};
+     var query={"category":req.params.id,"status":"true"};
      items.find(query).sort( { order: 1 } ).exec(function (err, data) {
         if (err) return next(err);
           res.json(data);

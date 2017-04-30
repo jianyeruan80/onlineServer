@@ -20,12 +20,24 @@ router.get('/merchantId', security.ensureAuthorized,function(req, res, next) {
        from: "items",
        localField: "_id",
        foreignField: "category",
-       as: "itemsDoc"
+       as: "itemsDocTemp"
      }
+},
+{
+   $addFields: 
+   { 
+    itemsDoc:{
+        $filter: {
+               input: "$itemsDocTemp",
+               as: "item",
+               cond: { $eq: [ "$$item.status", "true" ] }
+            }
+    }
+       
+   }
 }
         ],function(err,data){
         if (err) return next(err);
-
 
           res.json(data);
 
@@ -39,7 +51,7 @@ router.put('/sort/:id', security.ensureAuthorized,function(req, res, next) {
 
       
       var sortJson =req.body;
-     
+      
         categories.find(query, function(err, data) {
         if (err) return next(err);
         data.forEach(function(value, key) {
@@ -90,7 +102,7 @@ router.get('/groups/:id', security.ensureAuthorized,function(req, res, next) {
      {
        from: "categories",
        localField: "_id",
-       foreignField:"group",
+       foreignField:"group",  
        as: 'categories_docs'
      }
       }
