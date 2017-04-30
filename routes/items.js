@@ -173,6 +173,7 @@ router.delete('/:id', security.ensureAuthorized,function(req, res, next) {
        info.operator.id=req.token.id;
        info.operator.user=req.token.user;
        info.status=Date.now();
+       console.log(req.params.id)
        items.findByIdAndUpdate(req.params.id,info,{new:true},function (err, data) {
           if (err) return next(err);
            res.json(data);

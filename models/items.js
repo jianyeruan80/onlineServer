@@ -1,3 +1,4 @@
+
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     tools = require('../modules/tools');
@@ -57,10 +58,10 @@ var itemsSchema = new mongoose.Schema({
     status:{type:String,default:"true"},
     description:String,
     order:{type:Number,default:1},
-    oldPrice:Number,
+    originPrice:Number,
     unit:{type: String, enum: ['Case', 'LB', 'Bottle','Piece','Gram', 'Liter'],default:'Case'},
     /*compositions:[{inventoryItem:{type: mongoose.Schema.Types.ObjectId, ref: 'inventoryItems'},qty:Number}],*/
-    properties:[String],//recommend:{type:Boolean,default:false}
+    properties:Schema.Types.Mixed,//recommend:{type:Boolean,default:false}
     operator:{
     id:{type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     user:String
