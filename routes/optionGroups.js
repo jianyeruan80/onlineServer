@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
 });
 router.get('/merchant/:id', security.ensureAuthorized,function(req, res, next) {
 
-     var query={"merchantId":req.token.merchantId};
+     var query={"merchantId":req.token.merchantId,"status":"true"};
 
        optionGroups.find(query, function (err, data) {
         if (err) return next(err);
@@ -64,25 +64,26 @@ var options = {new: true};
 
 
 router.delete('/:id', security.ensureAuthorized,function(req, res, next) {
-     console.log("----------------------")
+    /* console.log("----------------------")
      var info=req.body;
      console.log(info);
      console.log(req.params.id)
 
      if(info.subId){
   
- console.log("----------------------")
-     optionGroups.findOneAndUpdate( {"_id":req.params.id}, {$pull: {options:{ '_id': info.subId }}},function(err,data){
+ console.log("----------------------")*/
+      console.log("xxxxxxxxxxxxxx"+req.params.id)
+     optionGroups.findByIdAndUpdate( req.params.id,{"status":Date.now()},function(err,data){
        if (err) return next(err);
         res.json(data);
      })
-   }else{
+   /*}else{
     optionGroups.remove({"_id":req.params.id}, function (err, data) {
         if (err) return next(err);
           res.json(data);
       });
    }
-
+*/
      
 });
 

@@ -50,7 +50,7 @@ var itemsSchema = new mongoose.Schema({
     name:{type:String},
     globalOptions:[{type: mongoose.Schema.Types.ObjectId,ref: 'globalOptionGroups'}],
     customerOptions:[optionsGroupsSchema],
-    size:[sizesSchema],
+    /*size:[sizesSchema],*/
     status:{type:String,default:"true"},
     category:{ type: mongoose.Schema.Types.ObjectId, ref: 'categories',null: true },
     price:Number,
@@ -59,7 +59,7 @@ var itemsSchema = new mongoose.Schema({
     description:String,
     order:{type:Number,default:1},
     originPrice:Number,
-    unit:{type: String, enum: ['Case', 'LB', 'Bottle','Piece','Gram', 'Liter'],default:'Case'},
+   /* unit:{type: String, enum: ['Case', 'LB', 'Bottle','Piece','Gram', 'Liter'],default:'Case'},*/
     /*compositions:[{inventoryItem:{type: mongoose.Schema.Types.ObjectId, ref: 'inventoryItems'},qty:Number}],*/
     properties:Schema.Types.Mixed,//recommend:{type:Boolean,default:false}
     operator:{

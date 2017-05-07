@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
 });
 router.get('/merchantId', security.ensureAuthorized,function(req, res, next) {
 
-     var query={"merchantId":req.token.merchantId};
+     var query={"merchantId":req.token.merchantId,"status":"true"};
 
        optionGroups.find(query, function (err, data) {
         if (err) return next(err);
@@ -64,8 +64,11 @@ router.delete('/:id', security.ensureAuthorized,function(req, res, next) {
 info.operator.id=req.token.id;
 info.operator.user=req.token.user;
 info.updatedAt=Date.now();
- optionGroups.findByIdAndUpdate(req.params.id,{"status":Date.now()},{new:true},function (err, data) {
+info.status=Date.now();
+console.log("xxxxxxxxxxxxxx"+req.params.id);
+ optionGroups.findByIdAndUpdate(req.params.id,info,{new:true},function (err, data) {
           if (err) return next(err);
+          console.log(data);
           res.json(data);
     });
    /*var info=req.body;

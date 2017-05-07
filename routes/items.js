@@ -62,11 +62,9 @@ router.put('/sort/:id', security.ensureAuthorized,function(req, res, next) {
 });
 
 router.get('/menus',security.ensureAuthorized,function(req, res, next) {
- 	 
- log.debug(req.token);
+log.debug(req.token);
 var info=req.params; 
 var query={}; query.merchantId=req.token.merchantId;
-
 async.parallel({
     one: function (done) {
       stores.findOne(query).exec(function (err, data) {
@@ -74,31 +72,31 @@ async.parallel({
                  done(null,data);
          
       })
-             
     },
-    two: function (done) {  //Laundry + Merchandise = Grand Total
-         query.status=true;
-         query.type = info.type || "Product";
-          groups.find(query).populate(
-             {
-              path: 'categories',
-              populate: [{ path: 'items', match: {status:true},options: { sort: { order: 1 }},populate: { path: 'globalOptions'}},{path: 'globalOptions'}],
-              match: {status:true}, 
-              options: { sort: { order: 1 }}
-              }
-            ).populate("globalOptions").sort({order:1}).exec(function(err, data) {    
-                 if (err) return  done(err,err); 
-                     done(null,data);
-                })
+    two: function (done) { 
+      db.categoriesView.aggregate([
+      {  $match:query}, 
+                          {$lookup:
+                           {
+                             from: "itemsView",
+                             localField: "_id",
+                             foreignField: "category",
+                             as: "items"
+                           }
+                          }  ]
+          ,function(err,data){
+             if (err) return  done(err,err);  
+            res.json(data);
+
+          })
+    
+
     }
 
 
 }, function (err, result) {
     if(!!err){console.log(err); return next(err)}
- console.log("xxxxxxxxxxxxx");
-     console.log(result);
- console.log("-------------------");
-    var returnJson={};
+   var returnJson={};
     returnJson.store=result.one;
     returnJson.menus=result.two;
    res.json(returnJson)
@@ -127,10 +125,7 @@ router.get('/group', security.ensureAuthorized,function(req, res, next) {
   res.json(data);
 
 })
-      /* categories.findOne(query, function (err, data) {
-        if (err) return next(err);
-         res.json(data);
-      });*/
+
      
 });
 router.get('/:id', security.ensureAuthorized,function(req, res, next) {

@@ -181,6 +181,7 @@ var info=req.body;
 })
 
 router.delete('/:id', security.ensureAuthorized,function(req, res, next) {
+         console.log("xxxxxxxxxx")
          categories.findByIdAndUpdate(req.params.id,{"status":Date.now()},{new:true},function (err, data) {
                   if (err) return next(err);
                     res.json(data);

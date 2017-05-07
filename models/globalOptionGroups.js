@@ -26,8 +26,9 @@ var globalOptionGroupsSchema = new mongoose.Schema({
     maximun:{type:Number,default:0},
     order:{type:Number,default:1},
     picture:String,
-    unit:{type: String, enum: ['Case', 'LB', 'Bottle','Piece','Gram', 'Liter'],default:'Case'},
-    compositions:[{inventoryItem:{type: mongoose.Schema.Types.ObjectId, ref: 'inventoryItems'},qty:Number}],
+    status:{type: "String",default:"true"},
+    /*unit:{type: String, enum: ['Case', 'LB', 'Bottle','Piece','Gram', 'Liter'],default:'Case'},*/
+    /*compositions:[{inventoryItem:{type: mongoose.Schema.Types.ObjectId, ref: 'inventoryItems'},qty:Number}],*/
     operator:{
      id:{type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     user:String
@@ -40,6 +41,6 @@ var globalOptionGroupsSchema = new mongoose.Schema({
     }
    
 });
-globalOptionGroupsSchema.index({merchantId: 1,group:1},{unique: true,sparse:true });
+globalOptionGroupsSchema.index({merchantId: 1,group:1,status:1},{unique: true,sparse:true });
 module.exports = mongoose.model('globalOptionGroups', globalOptionGroupsSchema);
 
