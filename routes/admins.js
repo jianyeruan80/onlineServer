@@ -79,13 +79,14 @@ var query={
                {"password":security.encrypt(md5(password))},
                {"token":{ $all:[token]}}
                ]
-            },
+            }
+          /*  ,
             { $or:
               [
                {"merchantId": {$regex:new RegExp('^'+info.merchantId+'$', 'i')}},
                {"merchantIds": {$regex:new RegExp('^'+info.merchantId+'$', 'i')}}
                ]
-             }
+             }*/
         ]
 
 };
@@ -104,7 +105,7 @@ var query={
           if (err) return next(err);
            var zoneInfo=info.zoneInfo || 0;
            var accessToken = jwt.sign(
-            {"merchantId":info.merchantId.toLowerCase(),"zoneInfo":zoneInfo,"id":datas[0]._id,"user":datas[0].userName},req.app.get("superSecret"), {
+            {"merchantId":datas[0].merchantId.toLowerCase(),"zoneInfo":zoneInfo,"id":datas[0]._id,"user":datas[0].userName},req.app.get("superSecret"), {
           expiresIn: '120m',
           algorithm: 'HS256'
           });

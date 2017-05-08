@@ -11,7 +11,20 @@ var express = require('express'),
     util = require('util'),
     returnData={},
     items = require('../models/items');
-
+    var mongoose = require('mongoose');
+const categoriesView = new Schema( {}, { strict: false });
+const QUERY_COMPANY = mongoose.model('categoriesView', categoriesView, 'categoriesView');
+/*QUERY_COMPANY.find({
+    "_id": userID
+}, (err, doc) => {
+     if (err) {
+        console.err(err)
+     } else {
+        console.log('vpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvps')
+        console.log(JSON.stringify(doc))
+        console.log('vpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvps')
+    }
+});*/
 router.get('/merchantId', security.ensureAuthorized,function(req, res, next) {
 var query={"merchantId":req.token.merchantId};
      //categories.find(query).populate({path:'items', 
@@ -61,11 +74,14 @@ router.put('/sort/:id', security.ensureAuthorized,function(req, res, next) {
      
 });
 
-router.get('/menus',security.ensureAuthorized,function(req, res, next) {
-log.debug(req.token);
-var info=req.params; 
-var query={}; query.merchantId=req.token.merchantId;
-async.parallel({
+
+
+router.get('/menus/:merchantId',function(req, res, next) {
+ var info=req.query;
+///var info=req.params.merchantId; 
+var query={}; query.merchantId=req.params.merchantId;
+console.log(query);
+/*async.parallel({
     one: function (done) {
       stores.findOne(query).exec(function (err, data) {
         if (err) return  done(err,err);          
@@ -73,9 +89,21 @@ async.parallel({
          
       })
     },
-    two: function (done) { 
-      db.categoriesView.aggregate([
-      {  $match:query}, 
+    two: function (done) { */
+      QUERY_COMPANY.find({
+   
+}, (err, doc) => {
+     if (err) {
+        console.err(err)
+     } else {
+        console.log('vpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvps')
+        console.log(JSON.stringify(doc))
+        console.log('vpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvps')
+    }
+});
+      QUERY_COMPANY.aggregate([
+      {  $match:{}}
+/*      , 
                           {$lookup:
                            {
                              from: "itemsView",
@@ -83,24 +111,25 @@ async.parallel({
                              foreignField: "category",
                              as: "items"
                            }
-                          }  ]
+                          } */ ]
           ,function(err,data){
-             if (err) return  done(err,err);  
+             if (err) return next(err);
+             console.log(data)
             res.json(data);
 
           })
     
 
-    }
+   // }
 
-
+/*
 }, function (err, result) {
     if(!!err){console.log(err); return next(err)}
    var returnJson={};
     returnJson.store=result.one;
     returnJson.menus=result.two;
    res.json(returnJson)
-}) 
+}) */
  
 })
 router.get('/group', security.ensureAuthorized,function(req, res, next) {
