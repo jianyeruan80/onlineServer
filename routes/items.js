@@ -12,8 +12,10 @@ var express = require('express'),
     returnData={},
     items = require('../models/items');
     var mongoose = require('mongoose');
-const categoriesView = new Schema( {}, { strict: false });
-const QUERY_COMPANY = mongoose.model('categoriesView', categoriesView, 'categoriesView');
+/*  const itemsViewSchema = new Schema( {}, { strict: false });
+const QUERY_COMPANY = mongoose.model('itemsView', itemsViewSchema,'itemsView'); */ 
+const categoriesViewSchema = new Schema( {}, { strict: false });
+const QUERY_COMPANY = mongoose.model('categoriesView', categoriesViewSchema,'categoriesView');
 /*QUERY_COMPANY.find({
     "_id": userID
 }, (err, doc) => {
@@ -80,44 +82,81 @@ router.get('/menus/:merchantId',function(req, res, next) {
  var info=req.query;
 ///var info=req.params.merchantId; 
 var query={}; query.merchantId=req.params.merchantId;
-console.log(query);
-/*async.parallel({
-    one: function (done) {
-      stores.findOne(query).exec(function (err, data) {
-        if (err) return  done(err,err);          
-                 done(null,data);
-         
-      })
+ categories.aggregate([
+    {
+        "$match": {
+            "status": "true"
+        }
     },
-    two: function (done) { */
-      QUERY_COMPANY.find({
-   
-}, (err, doc) => {
-     if (err) {
-        console.err(err)
-     } else {
-        console.log('vpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvps')
-        console.log(JSON.stringify(doc))
-        console.log('vpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvpsvps')
-    }
-});
-      QUERY_COMPANY.aggregate([
-      {  $match:{}}
-/*      , 
-                          {$lookup:
-                           {
-                             from: "itemsView",
-                             localField: "_id",
-                             foreignField: "category",
-                             as: "items"
-                           }
-                          } */ ]
-          ,function(err,data){
-             if (err) return next(err);
-             console.log(data)
-            res.json(data);
+    {
+        "$unwind": {
+            "path": "$globalOptions",
+            "preserveNullAndEmptyArrays": true
+        }
+    },
+    {
+        "$lookup": {
+            "from": "globaloptiongroups",
+            "localField": "globalOptions",
+            "foreignField": "_id",
+            "as": "globaloptiongroups"
+        }
+    },
+    {
+        "$unwind": {
+            "path": "$globaloptiongroups",
+            "preserveNullAndEmptyArrays": true
+        }
+    },
+    {
+        "$group": {
+            "_id": "$_id",
+            "globaloptiongroups": {
+                "$push": "$globaloptiongroups"
+            },
+            "name": {
+                "$first": "$name"
+            },
+            "merchantId": {
+                "$first": "$merchantId"
+            },
+            "customerOptions": {
+                "$first": "$customerOptions"
+            }
+        }
+    },
+    {
+        "$addFields": {
+            "options": {
+                "$setUnion": [
+                    "$globaloptiongroups",
+                    "$customerOptions"
+                ]
+            }
+        }
+    },
+      {
+        "$project": {
+            "_id": 1,
+            "name": 1,
+            "merchantId": 1,
+            "options": 1
+        }
+    },
+    {
+        $lookup:
+     {
+       from: "itemsView",
+       localField: "_id",
+       foreignField:"category",
+       as: 'items_docs'
+     }
+      }
+   ]
+,function(err,data){
+  res.json(data);
 
-          })
+})
     
 
    // }
