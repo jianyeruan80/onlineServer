@@ -80,13 +80,7 @@ var query={
                {"token":{ $all:[token]}}
                ]
             }
-          /*  ,
-            { $or:
-              [
-               {"merchantId": {$regex:new RegExp('^'+info.merchantId+'$', 'i')}},
-               {"merchantIds": {$regex:new RegExp('^'+info.merchantId+'$', 'i')}}
-               ]
-             }*/
+          
         ]
 
 };

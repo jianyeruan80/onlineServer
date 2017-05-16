@@ -14,8 +14,8 @@ var express = require('express'),
     var mongoose = require('mongoose');
 /*  const itemsViewSchema = new Schema( {}, { strict: false });
 const QUERY_COMPANY = mongoose.model('itemsView', itemsViewSchema,'itemsView'); */ 
-const categoriesViewSchema = new Schema( {}, { strict: false });
-const QUERY_COMPANY = mongoose.model('categoriesView', categoriesViewSchema,'categoriesView');
+/*const categoriesViewSchema = new Schema( {}, { strict: false });
+const categoriesView = mongoose.model('categoriesView', categoriesViewSchema,'categoriesView');*/
 /*QUERY_COMPANY.find({
     "_id": userID
 }, (err, doc) => {
@@ -33,9 +33,7 @@ var query={"merchantId":req.token.merchantId};
        // options: { sort: { order: 1 }}}).sort({order:1}).exec(function(err, data) {
         categories.find(query).exec(function(err, data) {
         if (err) return next(err);
-        console.log("====================");
-        console.log(data);
-        console.log("====================");
+
         res.json(data);
       });
      
@@ -127,7 +125,7 @@ var query={}; query.merchantId=req.params.merchantId;
     },
     {
         "$addFields": {
-            "options": {
+            "groupOptions": {
                 "$setUnion": [
                     "$globaloptiongroups",
                     "$customerOptions"
@@ -140,20 +138,21 @@ var query={}; query.merchantId=req.params.merchantId;
             "_id": 1,
             "name": 1,
             "merchantId": 1,
-            "options": 1
+            "groupOptions": 1
         }
     },
     {
-        $lookup:
-     {
-       from: "itemsView",
-       localField: "_id",
-       foreignField:"category",
-       as: 'items_docs'
-     }
-      }
+      $lookup:
+       {
+         from: "itemsView",
+         localField: "_id",
+         foreignField:"category",
+         as: 'items_docs'
+       }
+    }
    ]
 ,function(err,data){
+  console.log(data)
   res.json(data);
 
 })
