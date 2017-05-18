@@ -1,3 +1,6 @@
+
+
+
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     tools = require('../modules/tools');
@@ -6,18 +9,25 @@ var lauguagesSchema = new Schema({
   "third":String
 })
 var settingsSchema = new mongoose.Schema({ 
- createdAt:{type:Date,default:tools.defaultDate},
+ createdAt:{type:Date,default:Date.now()},
  updatedAt:Date,
  merchantId:{type:String,lowercase: true, trim: true},
  group:String,
- settingInfo:Schema.Types.Mixed,
+ category:String,
+ item:String,
+ values:Schema.Types.Mixed,
+ order:Number,
  operator:{
   id:{type: mongoose.Schema.Types.ObjectId, ref: 'users' },
   user:String
 },
  });
-settingsSchema.index({merchantId:1},{unique: true,sparse:true});
+settingsSchema.index({merchantId:1,group:1,category:1,item:1},{unique: true,sparse:true});
 module.exports = mongoose.model('settings', settingsSchema);
+
+
+
+
 
 /*
 {"ip":"192.168.1.41","englihs":true}

@@ -30,8 +30,9 @@
 <ion-subheader-bar class="bar bar-subheader" style="padding:0;margin:0">
     
 <div style="width:33.3%;text-align:center;font-size:25px;line-height:1.2;border-right:solid #ccc 1px;padding:0;"  ng-class="{'current_select':title=='Permissions'}" ng-click="goToLink('Permissions')">Permissions</div>
-    <div style="width:33.3%;text-align:center;font-size:25px;line-height:1.2;padding:0;border-right:solid #ccc 1px;" ng-class="{'current_select':title=='Chain'}" ng-click="goToLink('Chain')">Chain stores</div>
-        <div style="width:33.3%;text-align:center;font-size:25px;line-height:1.2;padding:0;border-right:solid #ccc 1px;" ng-class="{'current_select':title=='Setting'}" ng-click="goToLink('Setting')">Setting Seq</div>
+        <div style="width:33.3%;text-align:center;font-size:25px;line-height:1.2;padding:0;border-right:solid #ccc 1px;" ng-class="{'current_select':title=='Chain'}" ng-click="goToLink('Chain')">Chain stores</div>
+        <div style="width:33.3%;text-align:center;font-size:25px;line-height:1.2;padding:0;border-right:solid #ccc 1px;" ng-class="{'current_select':title=='Setting'}" ng-click="goToLink('Setting')">Setting</div>
+        <div style="width:33.3%;text-align:center;font-size:25px;line-height:1.2;padding:0;border-right:solid #ccc 1px;" ng-class="{'current_select':title=='Seq'}" ng-click="goToLink('Seq')">Setting Seq</div>
 
   </ion-subheader-bar>  <!-- optional -->
 
@@ -78,6 +79,25 @@
          <div style="display:inline-block;width:33%"> Name </div><div style="display:inline-block;width:67%">Value</div><!-- <div style="display:inline-block;width:33%">InputType</div> -->
     </div>
 
+   <div class="item" ng-repeat="item in appData.sets"  ng-click="openSetting(item)">
+    <div style="display:inline-block;">{{item.order}}-{{item.merchantId}}</div>
+    <div style="display:inline-block;">-{{item.group}}</div>
+    <div style="display:inline-block;">-{{item.category}}</div>
+    <div style="display:inline-block;">-{{item.item}}</div>
+    <div style="display:inline-block;">-{{item.type}}</div>
+    <div style="display:inline-block;">-{{item.values}}</div>
+    <div style="display:inline-block;"></div>
+  
+    </div>
+   </div>
+
+
+  <div class="list" ng-if="title=='Seq'">
+           
+   <div class="item item-divider">
+         <div style="display:inline-block;width:33%"> Name </div><div style="display:inline-block;width:67%">Value</div><!-- <div style="display:inline-block;width:33%">InputType</div> -->
+    </div>
+
    <div class="item" ng-repeat="item in appData.seqs"  ng-click="openSeq($index)">
     <div style="display:inline-block;">{{item.merchantId}}</div>
     <div style="display:inline-block;">{{item.name}}</div>
@@ -87,7 +107,6 @@
 
     </div>
    </div>
-
 
 
 

@@ -8,6 +8,7 @@ var express = require('express'),
     security = require('../modules/security'),
     stores = require('../models/stores'),
     tools = require('../modules/tools'),
+    settings = require('../models/settings'),
     md5 = require('md5'),
     jwt = require('jsonwebtoken');
 
@@ -23,16 +24,6 @@ router.post('/login', function(req, res, next) {
    query.type="SUPER";
     query.password=security.encrypt(md5(info.password));
     users.findOne(query,function (err, data) {
-       /*stores.aggregate([{
-         $lookup:{
-                from: data,
-               localField: "merchantId",
-                foreignField: "merchantId",
-                as: "users_doc"
-         }
-       }]).exec(function(err,data){
-            console.log(data)
-       })*/
 
     if (err) return next(err);
     if (!data) return next({"code":"90002"});
@@ -276,7 +267,57 @@ router.delete('/chainStores/:id', security.ensureAuthorized,function(req, res, n
           res.json(data);
       });
 });
+router.get('/settings/merchant/id', security.ensureAuthorized,function(req, res, next) {
+  var query={"merchantId":req.query.merchantId};
+      settings.find(query, function (err, data) {
+        if (err) return next(err);
+     
+     
+         res.json(data);
+      });
+     
+});
 
+
+router.post('/settings',  security.ensureAuthorized,function(req, res, next) {
+ console.log("xxxxxxxxxxxxxxxxxxxxxxxxxx");
+   var info=req.body;
+
+   console.log(info);
+   console.log("xxxxxxxxxxxxxxxxxddxxxxxxxxx");
+   info.operator={};
+info.operator.id=req.token.id;
+info.operator.user=req.token.user;
+ 
+   var dao = new settings(info);
+   dao.save(function (err, data) {
+   if (err) return next(err);
+          res.json(data);
+      });
+})
+router.put('/settings/:id',  security.ensureAuthorized,function(req, res, next) {
+var info=req.body;
+  
+var id=req.params.id;
+info.updatedAt=Date.now();
+info.operator={};
+info.operator.id=req.token.id;
+info.operator.user=req.token.user;
+
+var query = {"_id": id};
+var options = {new: true};
+ settings.findByIdAndUpdate(id,info,options,function (err, data) {
+          if (err) return next(err);
+          res.json(data);
+    });
+})
+
+router.delete('/settings/:id', security.ensureAuthorized,function(req, res, next) {
+     settings.remove({"_id":req.params.id}, function (err, data) {
+        if (err) return next(err);
+          res.json(data);
+      });
+});
 module.exports = router;
 
 /*

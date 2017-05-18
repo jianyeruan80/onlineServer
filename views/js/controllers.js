@@ -20,7 +20,9 @@
           $scope.appData = {};
           $scope.appData.seqs = [];
           $scope.appData.seq = {};
-              
+           
+           $scope.appData.settings = [];
+          $scope.appData.set = {};   
             
           $ionicModal.fromTemplateUrl('templates/permModal.html', {
               scope: $scope,
@@ -34,6 +36,24 @@
           $scope.closePermModal = function() {
               $scope.permModal.hide();
           };
+          $ionicModal.fromTemplateUrl('templates/settingModal.html', {
+              scope: $scope,
+              animation: 'slide-in-up'
+          }).then(function(modal) {
+              $scope.settingModal = modal;
+          });
+          $scope.openSetModal = function() {
+              $scope.appData.set={};
+              $scope.appData.set.values=[];
+              $scope.appData.set.values[0]={"type":"","name":"","value":""};
+              
+              $scope.appData.set.merchantId="laundry";
+              $scope.settingModal.show();
+          };
+          $scope.closeSetModal = function() {
+              $scope.settingModal.hide();
+          };
+
           $ionicModal.fromTemplateUrl('templates/userModal.html', {
               scope: $scope,
               animation: 'slide-in-up' /*backdropClickToClose: true*/
@@ -92,12 +112,13 @@
                       break;
                   case "Chain":
                       $scope.chainStore = {};
-                      // $scope.setting.inputType="INPUT";
-
-                      if (index >= 0) $scope.chainStore = angular.copy($scope.chainStores[index]);
+                     if (index >= 0) $scope.chainStore = angular.copy($scope.chainStores[index]);
                       $scope.openChainModal();
                       break;
-                  case "Setting":
+                 case "Setting":
+                      $scope.openSetModal();
+                      break;      
+                  case "Seq":
                       $scope.openSeq();
                       break;
               }
@@ -246,6 +267,60 @@
               })
 
           }
+          $scope.add=function(){
+             $scope.appData.set.values.push({"type":"","name":"","value":""});
+          }
+          $scope.settingList=function(){
+               var currentUrl = "settings/merchant/id?merchantId=laundry";
+
+              services.request("GET", currentUrl).then(function(data) {
+                 console.log("xxxxxxxxxxxxxxxxxxxx")
+                 console.log(data)
+                  console.log("xxxxxxxxxxxxxxxxxxxx")
+                  $scope.appData.sets= data;
+
+              })
+          }
+          $scope.openSetting=function(item){
+            $scope.openSetModal();
+
+            $scope.appData.set=JSON.parse(JSON.stringify(item));
+             for(var i=0;i<$scope.appData.set.values.length;i++){
+                 if($scope.appData.set.values[i].type!="input"){
+                  $scope.appData.set.values[i].value=JSON.stringify($scope.appData.set.values[i].value);
+                   }
+                }
+          }
+          $scope.settingSave=function(){
+              //var setting=JSON.parse(JSON.stringify($scope.appData.set))
+              var currentUrl = "settings";
+              var method = "POST";
+              if (!!$scope.appData.set._id) {
+                  var currentUrl = "settings/" + $scope.appData.set._id;
+                  method = "PUT";
+              }
+              try{
+             
+                for(var i=0;i<$scope.appData.set.values.length;i++){
+                   if($scope.appData.set.values[i].type!="input"){
+                  $scope.appData.set.values[i].value=JSON.parse($scope.appData.set.values[i].value.replace(/([\\])/g, ''));
+                }
+                   
+                }
+              //$scope.appData.set.values=JSON.parse('"' + $scope.appData.set.values.replace(/(["\\])/g, '\\$1') + '"');
+              console.log("=====111========");
+             // console.log($scope.appData.set.values.name)
+              console.log("=====33333========");
+             }catch(ex){
+
+               console.log(ex);
+             }
+              services.request(method, currentUrl,  $scope.appData.set).then(function(data) {
+                $scope.settingList();
+                 $scope.closeSetModal();
+              })
+          }
+
           $scope.permUpdate = function() {
               var currentUrl = "perms";
               var method = "POST";
@@ -335,7 +410,7 @@
 
               })
           }
-
+          $scope.settingList();
           $scope.chainStoreUpdate = function() {
               var currentUrl = "chainStores";
               var method = "POST";
